@@ -3,16 +3,24 @@ from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import status
 from django.shortcuts import get_object_or_404
 from .models import Article
 from .serializers import ArticleSerializer
 
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def article_list(request):
-    articles = Article.objects.all()
-    serializer = ArticleSerializer(articles, many=True)
-    return Response(serializer.data)
+    if request.method == 'GET':
+        articles = Article.objects.all()
+        serializer = ArticleSerializer(articles, many=True)
+        return Response(serializer.data)
+    
+    elif request.method == 'POST':
+        serializer = ArticleSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 @api_view(['GET'])
