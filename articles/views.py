@@ -7,7 +7,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from .models import Article
-from .serializers import ArticleSerializer
+from .serializers import ArticleSerializer, CommentSerializer
 
 
 class ArticleListAPIView(APIView):
@@ -43,4 +43,11 @@ class ArticleDetailAPIView(APIView):
         article = self.get_object(pk)
         article.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
+
+class CommentListAPIView(APIView):
+    def get(self, request, article_pk):
+        article = get_object_or_404(Article, pk=article_pk)
+        comments = article.comments.all()
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
