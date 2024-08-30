@@ -30,3 +30,6 @@ def json_02(request):
     articles = Article.objects.all()
     res_data = serializers.serialize('json', articles)
     return HttpResponse(res_data, content_type='application/json')
+
+def json_drf(request):
+    pass
