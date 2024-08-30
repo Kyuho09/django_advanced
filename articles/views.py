@@ -61,14 +61,17 @@ class CommentListAPIView(APIView):
 
 
 class CommentDetailAPIView(APIView):
+    def get_object(self, comment_pk):
+        return get_object_or_404(Comment, pk=comment_pk)
+    
     def put(self, request, comment_pk):
-        comment = get_object_or_404(Comment, pk=comment_pk)
+        comment = self.get_object(comment_pk)
         serializer = CommentSerializer(comment, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
 
     def delete(self, request, comment_pk):
-        comment = get_object_or_404(Comment, pk=comment_pk)
+        comment = self.get_object(comment_pk)
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
