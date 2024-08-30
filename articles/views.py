@@ -16,7 +16,7 @@ def article_list(request):
 
 
 @api_view(['GET'])
-def article_detail(requeset, pk):
+def article_detail(request, pk):
     article = get_object_or_404(Article, pk=pk)
     serializer = ArticleSerializer(article)
     return Response(serializer.data)
