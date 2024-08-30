@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
-from .models import Article
+from .models import Article, Comment
 from .serializers import ArticleSerializer, CommentSerializer
 
 
@@ -58,3 +58,10 @@ class CommentListAPIView(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.save(article=article)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class CommentDetailAPIView(APIView):
+    def delete(self, request, comment_pk):
+        comment = get_object_or_404(Comment, pk=comment_pk)
+        comment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
