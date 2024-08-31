@@ -26,7 +26,7 @@ class ArticleListAPIView(APIView):
 class ArticleDetailAPIView(APIView):
     def get_object(self, pk):
         return get_object_or_404(Article, pk=pk)
-    
+
     def get(self, request, pk):
         article = self.get_object(pk)
         serializer = ArticleSerializer(article)
@@ -34,7 +34,8 @@ class ArticleDetailAPIView(APIView):
 
     def put(self, request, pk):
         article = self.get_object(pk)
-        serializer = ArticleSerializer(article, data=request.data, partial=True)
+        serializer = ArticleSerializer(
+            article, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
@@ -51,7 +52,7 @@ class CommentListAPIView(APIView):
         comments = article.comments.all()
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
-    
+
     def post(self, request, article_pk):
         article = get_object_or_404(Article, pk=article_pk)
         serializer = CommentSerializer(data=request.data)
@@ -63,10 +64,11 @@ class CommentListAPIView(APIView):
 class CommentDetailAPIView(APIView):
     def get_object(self, comment_pk):
         return get_object_or_404(Comment, pk=comment_pk)
-    
+
     def put(self, request, comment_pk):
         comment = self.get_object(comment_pk)
-        serializer = CommentSerializer(comment, data=request.data, partial=True)
+        serializer = CommentSerializer(
+            comment, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
