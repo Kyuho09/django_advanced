@@ -4,8 +4,9 @@ from django.core import serializers
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
 from .models import Article, Comment
 from .serializers import (
     ArticleSerializer, 
@@ -15,6 +16,9 @@ from .serializers import (
 
 
 class ArticleListAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         articles = Article.objects.all()
         serializer = ArticleSerializer(articles, many=True)
@@ -28,6 +32,9 @@ class ArticleListAPIView(APIView):
 
 
 class ArticleDetailAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         return get_object_or_404(Article, pk=pk)
 
@@ -51,6 +58,9 @@ class ArticleDetailAPIView(APIView):
 
 
 class CommentListAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, article_pk):
         article = get_object_or_404(Article, pk=article_pk)
         comments = article.comments.all()
@@ -66,6 +76,9 @@ class CommentListAPIView(APIView):
 
 
 class CommentDetailAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+    
     def get_object(self, comment_pk):
         return get_object_or_404(Comment, pk=comment_pk)
 
