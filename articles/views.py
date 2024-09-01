@@ -20,6 +20,7 @@ class ArticleListAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        print("\n\n\n현재 유저의 유저네임:", request.user.username, "\n\n\n")
         articles = Article.objects.all()
         serializer = ArticleSerializer(articles, many=True)
         return Response(serializer.data)
