@@ -95,3 +95,17 @@ class CommentDetailAPIView(APIView):
         comment = self.get_object(comment_pk)
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["GET"])
+def check_sql(request):
+    from django.db import connection
+
+    comments = Comment.objects.all()
+    for comment in comments:
+        print(comment.article.title)
+    
+    print("-" * 30)
+    print(connection.queries)
+
+    return Response()
