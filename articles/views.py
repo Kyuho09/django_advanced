@@ -101,7 +101,7 @@ class CommentDetailAPIView(APIView):
 def check_sql(request):
     from django.db import connection
 
-    comments = Comment.objects.all()
+    comments = Comment.objects.all().select_related("article")
     for comment in comments:
         print(comment.article.title)
     
