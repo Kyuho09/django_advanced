@@ -99,14 +99,9 @@ class CommentDetailAPIView(APIView):
 
 @api_view(["GET"])
 def check_sql(request):
-    from django.db import connection
 
     comments = Comment.objects.all().prefetch_related("article")
     for comment in comments:
             print(comment.article.title)
-
-    
-    print("-" * 30)
-    print(connection.queries)
 
     return Response()
